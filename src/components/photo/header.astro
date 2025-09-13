@@ -3,17 +3,26 @@
 ---
 
 <style>
+	/* ---------------- header ---------------- */
+	.header {
+		position: sticky;
+		top: 0;
+		z-index: 2000; /* above overlay */
+		background-color: #1b1d35;
+		padding: 1.5rem 2.5rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
-    /* header style*/
-    .header {
-        position: sticky;
-        padding: 2rem 3rem;
-        background-color: #1b1d35; 
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        z-index: 2000;
-    }
+	}
+
+	.header h1 {
+        font-weight: 600;
+        color: #fafafa;
+        margin: 0;
+        text-decoration: none;
+        font-size: 1.8rem;
+	}
 
     .header h1 a {
         font-weight: 600;
@@ -21,145 +30,164 @@
         margin: 0;
         text-decoration: none;
         font-size: 1.8rem;
-        font-family: 'Work Sans', sans-serif;
     }
 
-    .header nav a {
+	/* ---------------- navigation ---------------- */
+	nav {
+		display: flex;
+		gap: 1.8rem;
+	}
+
+	nav a {
         font-family: 'Chivo Mono', monospace;
         color: #fafafa;
-        font-size: 1.2rem
-    }
+        text-decoration: none;
+        font-weight: 500;
+	}
 
-    .header nav a:hover {
-        font-weight: 600;
+    nav a:hover {
         text-decoration: underline;
     }
 
-    nav {
-        display: flex;
-        gap: 1.5rem;
-    }
+	/* ---------------- hamburger ---------------- */
+	.hamburger {
+		display: none;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 5px;
+		width: 30px;
+		height: 24px;
+		cursor: pointer;
+		z-index: 2100; /* above overlay */
+	}
 
-    /* mobile hamburger style */
-    .hamburger {
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-        width: 30px;
-        height: 24px;
-        cursor: pointer;
-        z-index: 2100;
-    }
+	.hamburger span {
+		display: block;
+		width: 25px;
+		height: 3px;
+		background: #fafafa;
+		border-radius: 2px;
+		transition: all 0.3s ease;
+	}
 
-    .hamburger span {
-        display: block;
-        width: 25px;
-        height: 3px;
-        background: #fafafa;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-    }
+	/* X animation */
+	.hamburger.active span:nth-child(1) {
+		transform: rotate(45deg) translate(5px, 5px);
+	}
 
-    /* X animation */
-    .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
+	.hamburger.active span:nth-child(2) {
+		opacity: 0;
+	}
 
-    .hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
+	.hamburger.active span:nth-child(3) {
+		transform: rotate(-45deg) translate(6px, -6px);
+	}
 
-    .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
-    }
+	/* ---------------- Overlay ---------------- */
+	.overlay {
+		display: none;
+		position: fixed;
+		inset: 0;
+		background: #fafafa;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 2rem;
+		z-index: 1000; /* under header */
+	}
 
-    /* overlay menu style */
-    .overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: #fafafa;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        z-index: 1000;
-    }
+	.overlay.active {
+		display: flex;
+	}
 
-    .overlay a {
+	.overlay a {
         font-family: 'Chivo Mono', monospace;
-        color: #1b1d35; 
-        font-size: 1.6rem;
+        color: #1b1d35;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.5rem;
+	}
+
+	.overlay a:hover {
+        text-decoration: underline;
+	}
+
+    .overlay-subpages {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: -.5rem; /* space from main links */
+        gap: 0.5rem;
+    }
+
+    .overlay-subpages .subpage-link {
+        font-size: 1rem; /* smaller than main overlay links */
+        color: #1b1d35;
         text-decoration: none;
     }
 
-    .overlay a:hover {
-        text-decoration: underline;
+    .overlay-subpages .subpage-link:hover {
+        opacity: 1;
     }
-
-    .overlay.active {
-        display: flex;
-    }
-
-    /* responsive rules */
-    @media (max-width: 768px) {
-        nav {
-        display: none;
-        }
-        .hamburger {
-        display: flex;
-        }
-    }
-
-    /* overlay logo */
-    .overlay-logo {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .overlay-logo img {
-        height: 64px;
-        width: auto;
-    }
-
+	/* ---------------- Responsive ---------------- */
+	@media (max-width: 768px) {
+		nav {
+			display: none; /* hide desktop nav */
+		}
+		.hamburger {
+			display: flex; /* show hamburger */
+		}
+	}
 </style>
 
 <header class="header">
-    <h1><a href="/">Mateo Cervantes</a></h1>
+	<div>
+		<a href="/photo"><h1>Mateo Cervantes</h1></a>
+	</div>
 
-    <nav>
-        <a href="/photo">Work</a>
-        <a href="/contact">Contact</a>
-        <a href="/about">About</a>
-    </nav>
+	<nav>
+		<a href="/photo">Work</a>
+		<a href="/contact">Contact</a>
+		<a href="/about">About</a>
+	</nav>
 
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
+	<div class="hamburger" id="hamburger">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
 </header>
 
 <div class="overlay" id="overlay">
-    <div class="overlay-logo">
-        <img src="../../public/logo_white.svg" alt="Logo" />
-    </div>
-    <a href="/photo">Work</a>
-    <a href="/contact">Contact</a>
-    <a href="/about">About</a>
+	<a href="/photo/index">Work</a>
+    <div class="overlay-subpages">
+		<a href="/people" class="subpage-link">People</a>
+		<a href="/sports" class="subpage-link">Sports</a>
+        <a href="/events" class="subpage-link">Events</a>
+		<a href="/places" class="subpage-link">Places</a>
+	</div>
+	<a href="/contact">Contact</a>
+	<a href="/about">About</a>
 </div>
 
 <script>
-const hamburger = document.getElementById("hamburger");
-const overlay = document.getElementById("overlay");
+	const hamburger = document.getElementById("hamburger");
+	const overlay = document.getElementById("overlay");
 
-if (hamburger && overlay) {
-    hamburger.addEventListener("click", () => {
-        hamburger.classList.toggle("active");
-        overlay.classList.toggle("active");
-    });
-}
+	// Toggle overlay and hamburger X
+	if (hamburger && overlay) {
+		hamburger.addEventListener("click", () => {
+			hamburger.classList.toggle("active");
+			overlay.classList.toggle("active");
+		});
+
+		// Close overlay when clicking a link inside it
+		overlay.querySelectorAll("a").forEach(link => {
+			link.addEventListener("click", () => {
+				hamburger.classList.remove("active");
+				overlay.classList.remove("active");
+			});
+		});
+	}
 </script>

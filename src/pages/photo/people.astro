@@ -1,5 +1,6 @@
 ---
 import '../../styles/photo/global.css';
+import Header from "../../components/photo/header.astro";
 ---
 
 <html lang="en">
@@ -11,15 +12,10 @@ import '../../styles/photo/global.css';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
+
+  <Header/>
+
   <body>
-    <header class="header">
-      <h1>Mateo Cervantes</h1>
-      <nav class="nav">
-        <a href="/photo/">Work</a>
-        <a href="/photo/contact">Contact</a>
-        <a href="/photo/services">Services</a>
-      </nav>
-    </header>
 
     <div class="image-grid">
         <img src="/photo/people/people_13.jpg" alt="Portfolio piece 1">
@@ -35,3 +31,5 @@ import '../../styles/photo/global.css';
         <img src="/photo/people/people_13.jpg" alt="Portfolio piece 11">
         <img src="/photo/people/people_13.jpg" alt="Portfolio piece 12">
     </div>
+  </body>
+</html>
