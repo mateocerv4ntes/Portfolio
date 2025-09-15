@@ -6,14 +6,14 @@
 	/* ---------------- header ---------------- */
 	.header {
 		position: sticky;
-		top: 0;
+		margin: 0;
 		z-index: 2000; /* above overlay */
 		background-color: #1b1d35;
 		padding: 1.5rem 2.5rem;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-
+    	font-family: 'Work Sans', sans-serif;
 	}
 
 	.header h1 {
@@ -31,8 +31,13 @@
         text-decoration: none;
         font-size: 1.8rem;
     }
+	
+	.header a {
+    	text-decoration: none;
+	}
 
 	/* ---------------- navigation ---------------- */
+	
 	nav {
 		display: flex;
 		gap: 1.8rem;
@@ -43,6 +48,7 @@
         color: #fafafa;
         text-decoration: none;
         font-weight: 500;
+		font-size: 1rem;
 	}
 
     nav a:hover {
@@ -148,8 +154,8 @@
 
 	<nav>
 		<a href="/photo">Work</a>
-		<a href="/contact">Contact</a>
-		<a href="/about">About</a>
+		<a href="/photo/contact">Contact</a>
+		<a href="/photo/about">About</a>
 	</nav>
 
 	<div class="hamburger" id="hamburger">
@@ -162,13 +168,13 @@
 <div class="overlay" id="overlay">
 	<a href="/photo/index">Work</a>
     <div class="overlay-subpages">
-		<a href="/people" class="subpage-link">People</a>
-		<a href="/sports" class="subpage-link">Sports</a>
-        <a href="/events" class="subpage-link">Events</a>
-		<a href="/places" class="subpage-link">Places</a>
+		<a href="/photo/people" class="subpage-link">People</a>
+		<a href="/photo/sports" class="subpage-link">Sports</a>
+        <a href="/photo/events" class="subpage-link">Events</a>
+		<a href="/photo/places" class="subpage-link">Places</a>
 	</div>
-	<a href="/contact">Contact</a>
-	<a href="/about">About</a>
+	<a href="/photo/contact">Contact</a>
+	<a href="/photo/about">About</a>
 </div>
 
 <script>

@@ -1,15 +1,7 @@
 body {
     margin: 0;
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'Chivo Mono', monospace;
     background: #fafafa;
-}
-
-.header a {
-    text-decoration: none;
-}
-
-.nav a:hover {
-    text-decoration: underline;
 }
 
 .center-y {
@@ -17,23 +9,19 @@ body {
     justify-content: center;
 }
 
-
-/* Card grid container */
 .card-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(400px, 1fr));
     gap: 1rem;
     padding: 1rem;
-
-    /* keeps it from becoming massive on ultra-wide monitors */
     max-width: 4000px;
     margin: 0 auto;
 }
 
-/* Responsive: 1 column on screens ≤ 1000px */
+/* responsive @ width 1000 */
 @media (max-width: 1000px) {
     .card-grid {
-        grid-template-columns: 1fr; /* single column */
+        grid-template-columns: 1fr;
     }
 }
 

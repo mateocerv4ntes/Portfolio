@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    font-family: 'Chivo Mono', monospace;
+    color: #1b1d35;
+}
+
+header {
+    font-family: 'Chivo Mono', monospace;
+    display: flex;
+    justify-content: flex-start;
+    font-weight: 600;
+    font-size: 3rem;
+    color: #1b1d35;
+}
+
+.about-container {
+    display: flex;
+    flex-wrap: wrap; /* allows stacking when needed */
+    margin: 2.5rem;
+    justify-content: space-between;
+}
+
+.about-text {
+    flex: 2; /* 2 parts of 3 */
+    margin-right: 2rem;
+    max-width: 596px;
+}
+
+.about-image {
+    flex: 1; /* 1 part of 3 */
+    aspect-ratio: 3/4;
+    max-width: 296px;
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+}
+
+/* Responsive stacking */
+@media (max-width: 768px) {
+    .about-container {
+        flex-direction: column;
+    }
+    .about-text, .about-image {
+        flex: 1 1 100%; /* full width each */
+    }
+}
