@@ -1,0 +1,82 @@
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 2.5rem;
+  margin-top: 0rem;
+}
+
+.contact-form label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form input,
+.contact-form textarea {
+  align-self: stretch;
+  padding: .6rem;
+  border: 2px solid #1b1d35;
+  border-radius: 0px;
+  font: inherit;
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.contact-form button {
+  padding: 0.6rem 1rem;
+  align-self: stretch;
+  border: 2px solid #1b1d35;
+  background: #ffffff;
+  border-radius: 0px;
+  cursor: pointer;
+  margin-top: 2rem;
+}
+
+.contact-text {
+  font-family: 'Chivo Mono', monospace;
+  font-size: 1.2rem;
+  color: #1b1d35;
+}
+
+.contact-form button:hover {
+  background: #1b1d35;
+}
+
+.contact-text:hover {
+  color: #ffffff;
+}
+
+.hidden {
+  display: none;
+}
+
+body {
+    margin: 0;
+    font-family: 'Chivo Mono', monospace;
+    color: #1b1d35;
+    font-size: 1.2rem;
+}
+
+header {
+    font-family: 'Chivo Mono', monospace;
+    display: flex;
+    justify-content: flex-start;
+    font-weight: 600;
+    font-size: 3rem;
+    color: #1b1d35;
+    margin-top: 2.5rem;
+    margin-left: 2.5rem;
+}
+
+.text-label {
+    font-family: 'Chivo Mono', monospace;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #1b1d35;
+    margin-left: 0rem;
+}

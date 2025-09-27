@@ -1,0 +1,42 @@
+---
+// src/components/ContactForm.astro
+import '../../styles/photo/contact_form.css';
+---
+<form 
+  name="contact" 
+  method="POST" 
+  data-netlify="true" 
+  netlify-honeypot="bot-field"
+  action="/success"
+  class="contact-form"
+>
+  <!-- Netlify requires these -->
+  <input type="hidden" name="form-name" value="contact" />
+  <p class="hidden">
+    <label>
+      Don’t fill this out if you're human: <input name="bot-field" />
+    </label>
+  </p>
+
+  <label>
+    <p class="text-label">Name:</p>
+    <input type="text" name="name" required />
+  </label>
+
+  <label>
+    <p class="text-label">Email:</p>
+    <input type="email" name="email" required />
+  </label>
+
+  <label>
+    <p class="text-label">What's the Occasion?</p>
+    <textarea name="message" rows="5" required></textarea>
+  </label>
+
+  <label>
+    <p class="text-label">When?</p>
+    <input type="text" name="date" required/>
+  </label>
+
+  <button type="submit" class="contact-text">Send</button>
+</form>

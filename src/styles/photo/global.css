@@ -1,7 +1,24 @@
 body {
     margin: 0;
+    font-size: 1.2rem;
     font-family: 'Chivo Mono', monospace;
     background: #fafafa;
+}
+
+header {
+    font-family: 'Chivo Mono', monospace;
+    display: flex;
+    justify-content: flex-start;
+    font-weight: 600;
+    font-size: 3rem;
+    color: #1b1d35;
+    margin-top: 2.5rem;
+    margin-left: 2.5rem;
+}
+
+p {
+    margin-left: 2.5rem; 
+    margin-bottom: 0rem;
 }
 
 .center-y {
@@ -12,8 +29,8 @@ body {
 .card-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(400px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
+    gap: 2rem;
+    padding: 2.5rem;
     max-width: 4000px;
     margin: 0 auto;
 }
@@ -33,7 +50,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: .8rem;
+    border-radius: 0rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,7 +83,6 @@ body {
 
 .card:hover::before {
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
     box-shadow: 1 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8x);
