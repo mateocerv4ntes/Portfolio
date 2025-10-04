@@ -1,0 +1,87 @@
+body {
+    margin: 0;
+    font-size: 1.2rem;
+    font-family: 'Chivo Mono', monospace;
+    color: #1b1d35;
+}
+
+header {
+    font-family: 'Chivo Mono', monospace;
+    display: flex;
+    justify-content: flex-start;
+    font-weight: 600;
+    font-size: 3rem;
+    color: #1b1d35;
+}
+
+.pricing-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2.5rem;
+    justify-content: space-between;
+}
+
+.pricing-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #1b1d35;
+}
+
+.pricing-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 2rem;
+}
+
+.pricing-card {
+    flex: 1 1 300px;
+    max-width: 400px;
+    padding: 1.5rem;
+}
+
+.pricing-card h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.pricing-card p {
+    margin: 0.5rem 0;
+}
+
+.pricing-price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+.book-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #1b1d35;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #1b1d35;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.book-btn:hover {
+    background: #1b1d35;
+    color: #fff;
+}
+
+/* Responsive stacking */
+@media (max-width: 768px) {
+    .pricing-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+}
