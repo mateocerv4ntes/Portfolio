@@ -1,35 +1,132 @@
 ---
+import fs from "fs";
+import path from "path";
 import '../../styles/photo/global.css';
 import Header from "../../components/photo/header.astro";
+
+const imagesDir = path.resolve("public/photo/events");
+const images = fs
+  .readdirSync(imagesDir)
+  .filter(file => /\.(jpe?g|png|webp|gif)$/i.test(file))
+  .map(file => ({
+    src: `/photo/people/${file}`,
+    alt: file.replace(/\.[^/.]+$/, ""),
+  }));
 ---
 
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>Mateo Cervantes</title>
-    <link rel="icon" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        font-size: 1.2rem;
+        font-family: 'Chivo Mono', monospace;
+        background: #fafafa;
+      }
+
+      header {
+        font-family: 'Chivo Mono', monospace;
+        display: flex;
+        justify-content: flex-start;
+        font-weight: 600;
+        font-size: 3rem;
+        color: #1b1d35;
+        margin: 2.5rem;
+      }
+
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 2.5rem;
+        max-width: 1624px;
+      }
+
+      .grid img {
+        height: auto;                /* Row height */
+        max-height: 324px;
+        width: auto;                  /* Width adapts to aspect ratio */
+        object-fit: cover;            /* Fills height neatly */
+        flex-grow: 1;                 /* Allows expansion if room is available */
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        user-select: none;
+        -webkit-user-drag: none;
+        background: #222;
+      }
+
+      .grid img:hover {
+        transform: scale(1.02);
+      }
+
+      /* Lightbox */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .lightbox.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .lightbox img {
+        max-width: auto;
+        max-height: 100%;
+        -webkit-user-drag: none;
+      }
+    </style>
   </head>
 
-  <Header/>
-
   <body>
+    <Header />
 
-    <div class="image-grid">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 1">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 2">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 3">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 4">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 5">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 6">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 7">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 8">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 9">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 10">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 11">
-        <img src="/photo/people/people_13.jpg" alt="Portfolio piece 12">
+    <header>Events</header>
+
+    <div class="grid">
+      {images.map((img, i) => (
+        <img src={img.src} alt={img.alt} data-index={i} />
+      ))}
     </div>
+
+    <div class="lightbox" id="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+
+    <script>
+      const imgs = document.querySelectorAll('.grid img');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+
+      imgs.forEach(img => {
+        img.addEventListener('click', () => {
+          lightboxImg.src = img.src;
+          lightbox.classList.add('active');
+        });
+      });
+
+      // Prevent right-click on images
+      imgs.forEach(img => {
+        img.addEventListener('contextmenu', e => e.preventDefault());
+      });
+
+      lightboxImg.addEventListener('contextmenu', e => e.preventDefault());
+
+      lightbox.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') lightbox.classList.remove('active');
+      });
+    </script>
   </body>
 </html>
