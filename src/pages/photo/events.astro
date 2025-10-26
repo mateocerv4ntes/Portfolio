@@ -1,21 +1,41 @@
 ---
 import fs from "fs";
 import path from "path";
+import sizeOf from "image-size";
 import '../../styles/photo/global.css';
 import Header from "../../components/photo/header.astro";
 
 const imagesDir = path.resolve("public/photo/events");
 const images = fs
   .readdirSync(imagesDir)
-  .filter(file => /\.(jpe?g|png|webp|gif)$/i.test(file))
-  .map(file => ({
-    src: `/photo/people/${file}`,
-    alt: file.replace(/\.[^/.]+$/, ""),
-  }));
+  .filter(file => /\.(jpe?g|png|webp|gif|avif)$/i.test(file))
+  .map(file => {
+    // --- START OF CHANGES ---
+    
+    // 1. Create the full path to the image
+    const imagePath = path.join(imagesDir, file);
+    
+    // 2. Read the file into a buffer
+    const imageBuffer = fs.readFileSync(imagePath);
+    
+    // 3. Pass the buffer (not the path) to sizeOf
+    const dimensions = sizeOf(imageBuffer);
+    
+    // --- END OF CHANGES ---
+
+    return {
+      src: `/photo/events/${file}`,
+      alt: file.replace(/\.[^/.]+$/, ""),
+      width: dimensions.width,
+      height: dimensions.height,
+    };
+  });
 ---
 
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="https://unpkg.com/photoswipe@5/dist/photoswipe.css">
+
     <style>
       body {
         margin: 0;
@@ -42,47 +62,32 @@ const images = fs
         max-width: 1624px;
       }
 
-      .grid img {
-        height: auto;                /* Row height */
+      /* 5. UPDATED CSS to target the <a> tag as the flex item */
+      .grid a {
+        display: block; /* Make the link a block-level item */
         max-height: 324px;
-        width: auto;                  /* Width adapts to aspect ratio */
-        object-fit: cover;            /* Fills height neatly */
-        flex-grow: 1;                 /* Allows expansion if room is available */
+        flex-grow: 1;
         cursor: pointer;
         transition: transform 0.2s ease;
-        user-select: none;
-        -webkit-user-drag: none;
         background: #222;
+        line-height: 0; /* Remove potential whitespace */
       }
-
-      .grid img:hover {
+      
+      .grid a:hover {
         transform: scale(1.02);
       }
-
-      /* Lightbox */
-      .lightbox {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.95);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 999;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-      }
-
-      .lightbox.active {
-        opacity: 1;
-        pointer-events: all;
-      }
-
-      .lightbox img {
-        max-width: auto;
-        max-height: 100%;
+      
+      /* The <img> inside the <a> should fill it */
+      .grid a img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        user-select: none;
         -webkit-user-drag: none;
+        display: block;
       }
+
+      /* 6. REMOVED old .lightbox CSS */
     </style>
   </head>
 
@@ -91,42 +96,40 @@ const images = fs
 
     <header>Events</header>
 
-    <div class="grid">
-      {images.map((img, i) => (
-        <img src={img.src} alt={img.alt} data-index={i} />
-      ))}
+    <div class="grid pswp-gallery" id="my-gallery">
+          {images.map((img) => (
+            <a
+              href={img.src}
+              data-pswp-width={img.width}
+              data-pswp-height={img.height}
+              target="_blank"
+              style={`aspect-ratio: ${img.width} / ${img.height};`}
+            >
+              <img src={img.src} alt={img.alt} />
+            </a>
+          ))}
     </div>
 
-    <div class="lightbox" id="lightbox">
-      <img id="lightbox-img" src="" alt="" />
-    </div>
+    <script type="module">
+      import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.js';
 
-    <script>
-      const imgs = document.querySelectorAll('.grid img');
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightbox-img');
+      const lightbox = new PhotoSwipeLightbox({
+        // The gallery's main DOM element
+        gallery: '#my-gallery',
 
-      imgs.forEach(img => {
-        img.addEventListener('click', () => {
-          lightboxImg.src = img.src;
-          lightbox.classList.add('active');
-        });
+        // The selector for child items (the <a> tags)
+        children: 'a',
+
+        // Tell PhotoSwipe how to get the data from the <a> tag
+        // (it reads href, data-pswp-width, and data-pswp-height automatically)
+        
+        // Dynamically import the core PhotoSwipe module
+        pswpModule: () => import('https://unpkg.com/photoswipe@5/dist/photoswipe.esm.js'),
       });
 
-      // Prevent right-click on images
-      imgs.forEach(img => {
-        img.addEventListener('contextmenu', e => e.preventDefault());
-      });
-
-      lightboxImg.addEventListener('contextmenu', e => e.preventDefault());
-
-      lightbox.addEventListener('click', () => {
-        lightbox.classList.remove('active');
-      });
-
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') lightbox.classList.remove('active');
-      });
+      // Initialize the lightbox
+      lightbox.init();
     </script>
-  </body>
+    
+    </body>
 </html>

@@ -7,6 +7,10 @@ import 'photoswipe/style.css';
 document.addEventListener('DOMContentLoaded', () => {
   console.log('PhotoSwipe script is running.'); // Check console for this message!
 
+  const options = {
+    bgOpacity: 0.95,
+  };
+
   const lightbox = new PhotoSwipeLightbox({
     gallery: '#gallery',
     children: 'a',

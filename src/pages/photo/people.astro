@@ -1,25 +1,41 @@
 ---
-import 'photoswipe/style.css';
+import fs from "fs";
+import path from "path";
+import sizeOf from "image-size";
 import '../../styles/photo/global.css';
 import Header from "../../components/photo/header.astro";
 
-const imageImports = import.meta.glob('../../assets/photo/people/*.{jpg,jpeg,png,webp,gif}', { eager: true });
+const imagesDir = path.resolve("public/photo/people");
+const images = fs
+  .readdirSync(imagesDir)
+  .filter(file => /\.(jpe?g|png|webp|gif|avif)$/i.test(file))
+  .map(file => {
+    // --- START OF CHANGES ---
+    
+    // 1. Create the full path to the image
+    const imagePath = path.join(imagesDir, file);
+    
+    // 2. Read the file into a buffer
+    const imageBuffer = fs.readFileSync(imagePath);
+    
+    // 3. Pass the buffer (not the path) to sizeOf
+    const dimensions = sizeOf(imageBuffer);
+    
+    // --- END OF CHANGES ---
 
-// Build an array of image objects with optimized src and full-size src
-const images = Object.values(imageImports).map((img) => {
-  const filename = img.default.src.split('/').pop();
-  return {
-    thumb: img.default.src,  // optimized Astro asset
-    full: `/photo/people/${filename}`, // full-res from public folder
-    alt: filename.replace(/\.[^/.]+$/, ""),
-  };
-});
+    return {
+      src: `/photo/people/${file}`,
+      alt: file.replace(/\.[^/.]+$/, ""),
+      width: dimensions.width,
+      height: dimensions.height,
+    };
+  });
 ---
 
 <html lang="en">
   <head>
-    <title>People | Mateo Photography</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/photoswipe@5/dist/photoswipe.css">
+
     <style>
       body {
         margin: 0;
@@ -46,47 +62,74 @@ const images = Object.values(imageImports).map((img) => {
         max-width: 1624px;
       }
 
-      .grid a img {
-        height: auto;
+      /* 5. UPDATED CSS to target the <a> tag as the flex item */
+      .grid a {
+        display: block; /* Make the link a block-level item */
         max-height: 324px;
-        width: auto;
-        object-fit: cover;
         flex-grow: 1;
         cursor: pointer;
         transition: transform 0.2s ease;
-        user-select: none;
-        -webkit-user-drag: none;
         background: #222;
+        line-height: 0; /* Remove potential whitespace */
       }
-
-      .grid a img:hover {
+      
+      .grid a:hover {
         transform: scale(1.02);
       }
+      
+      /* The <img> inside the <a> should fill it */
+      .grid a img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        user-select: none;
+        -webkit-user-drag: none;
+        display: block;
+      }
+
+      /* 6. REMOVED old .lightbox CSS */
     </style>
   </head>
 
   <body>
     <Header />
+
     <header>People</header>
 
-    <div class="grid" id="gallery">
-      {images.map((img) => (
-        <a
-          href={img.full}
-          data-pswp-width="4000"
-          data-pswp-height="2667"
-        >
-          <img
-            src={img.thumb}
-            alt={img.alt}
-            loading="lazy"
-            decoding="async"
-          />
-        </a>
-      ))}
+    <div class="grid pswp-gallery" id="my-gallery">
+          {images.map((img) => (
+            <a
+              href={img.src}
+              data-pswp-width={img.width}
+              data-pswp-height={img.height}
+              target="_blank"
+              style={`aspect-ratio: ${img.width} / ${img.height};`}
+            >
+              <img src={img.src} alt={img.alt} />
+            </a>
+          ))}
     </div>
 
-    <script type="module" src="../scripts/lightbox.js" client:load></script>
+    <script type="module">
+      import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.js';
 
-  </body>
+      const lightbox = new PhotoSwipeLightbox({
+        // The gallery's main DOM element
+        gallery: '#my-gallery',
+
+        // The selector for child items (the <a> tags)
+        children: 'a',
+
+        // Tell PhotoSwipe how to get the data from the <a> tag
+        // (it reads href, data-pswp-width, and data-pswp-height automatically)
+        
+        // Dynamically import the core PhotoSwipe module
+        pswpModule: () => import('https://unpkg.com/photoswipe@5/dist/photoswipe.esm.js'),
+      });
+
+      // Initialize the lightbox
+      lightbox.init();
+    </script>
+    
+    </body>
 </html>
